@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CVS-Smart Questionnaire & Report</title>
+    <!-- Menggunakan Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: {
+                            light: '#e6f0fa',
+                            DEFAULT: '#1d4ed8',
+                            dark: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-brandBlue-dark text-white p-5 shadow-md">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-wide">CVS-SMART SYSTEM</h1>
+            <span class="text-sm bg-blue-600 px-3 py-1 rounded-full">Kaji Selidik Digital</span>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 flex-grow my-6">
+        
+        <!-- SEKSYEN 1: BORANG MAKLUMAT PERIBADI -->
+        <div id="step-personal" class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 transition-all duration-300">
+            <h2 class="text-2xl font-bold text-brandBlue-dark mb-2">Maklumat Peribadi Pelanggan</h2>
+            <p class="text-gray-500 mb-6 text-sm">Sila isi maklumat anda sebelum memulakan kaji selidik untuk tujuan penyediaan laporan akhir.</p>
+            
+            <form id="form-personal" onsubmit="nextToQuestions(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Penuh <span class="text-red-500">*</span></label>
+                    <input type="text" id="cust-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandBlue focus:outline-none" placeholder="Masukkan nama penuh anda">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nombor Telefon <span class="text-red-500">*</span></label>
+                        <input type="tel" id="cust-phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandBlue focus:outline-none" placeholder="Contoh: 0123456789">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Alamat Emel <span class="text-red-500">*</span></label>
+                        <input type="email" id="cust-email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandBlue focus:outline-none" placeholder="nama@email.com">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-brandBlue hover:bg-brandBlue-dark text-white font-bold py-3 px-4 rounded-lg shadow transition duration-200 mt-6 flex justify-center items-center gap-2">
+                    Mula Kaji Selidik 
+                    <svg xmlns="http://w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                </button>
+            </form>
+        </div>
+
+        <!-- SEKSYEN 2: SOALAN KAJI SELIDIK (SAMPEL SMART QUESTIONNAIRE) -->
+        <div id="step-questions" class="hidden bg-white p-8 rounded-xl shadow-lg border border-gray-100 transition-all duration-300">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-brandBlue-dark">Kaji Selidik Prestasi</h2>
+                <span id="progress-text" class="text-sm font-semibold text-brandBlue bg-brandBlue-light px-3 py-1 rounded-full">Soalan 1 daripada 3</span>
+            </div>
+
+            <form id="form-questions" onsubmit="generateReport(event)" class="space-y-6">
+                <!-- Soalan 1 -->
+                <div class="question-block">
+                    <p class="font-medium text-gray-800 mb-3">1. Berapakah tahap kepuasan anda terhadap pengurusan sistem semasa?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"><input type="radio" name="q1" value="3" required class="h-4 w-4 text-brandBlue"> <span class="ml-3 text-sm">Sangat Puas Hati (3 Markah)</span></label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"><input type="radio" name="q1" value="2" class="h-4 w-4 text-brandBlue"> <span class="ml-3 text-sm">Sederhana (2 Markah)</span></label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"><input type="radio" name="q1" value="1" class="h-4 w-4 text-brandBlue"> <span class="ml-3 text-sm">Kurang Memuaskan (1 Markah)</span></label>
+                    </div>
+                </div>
+
+                <!-- Soalan 2 -->
+                <div class="question-block">
+                    <p class="font-medium text-gray-800 mb-3">2. Adakah perniagaan anda memerlukan automasi sistem digital dengan segera?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"><input type="radio" name="q2" value="3" required class="h-4 w-4 text-brandBlue"> <span class="ml-3 text-sm">Ya, Sangat Kritikal (3 Markah)</span></label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"><input type="radio" name="q2" value="2" class="h-4 w-4 text-brandBlue"> <span class="ml-3 text-sm">Mungkin Dalam Masa Terdekat (2 Markah)</span></label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"><input type="radio" name="q2" value="1" class="h-4 w-4 text-brandBlue"> <span class="ml-3 text-sm">Tidak Perlu Buat Masa Ini (1 Markah)</span></label>
+                    </div>
+                </div>
+
+                <!-- Soalan 3 -->
+                <div class="question-block">
+                    <p class="font-medium text-gray-800 mb-3">3. Berapakah bajet tahunan yang diperuntukkan untuk pengurusan fasiliti / IT?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"><input type="radio" name="q3" value="3" required class="h-4 w-4 text-brandBlue"> <span class="ml-3 text-sm">Tinggi (> RM50,000) (3 Markah)</span></label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"><input type="radio" name="q3" value="2" class="h-4 w-4 text-brandBlue"> <span class="ml-3 text-sm">Sederhana (RM10,000 - RM50,000) (2 Markah)</span></label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"><input type="radio" name="q3" value="1" class="h-4 w-4 text-brandBlue"> <span class="ml-3 text-sm">Rendah (< RM10,000) (1 Markah)</span></label>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <button type="button" onclick="backToPersonal()" class="w-1/3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-4 rounded-lg transition duration-200">Kembali</button>
+                    <button type="submit" class="w-2/3 bg-brandBlue hover:bg-brandBlue-dark text-white font-bold py-3 px-4 rounded-lg shadow transition duration-200">Hantar & Jana Laporan</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- SEKSYEN 3: LAPORAN AKHIR & LINK SLOTS APPOINTMENT -->
+        <div id="step-report" class="hidden bg-white p-8 rounded-xl shadow-lg border border-gray-100 transition-all duration-300">
+            <div class="text-center pb-6 border-b border-gray-200 mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 text-green-600 rounded-full mb-4">
+                    <svg xmlns="http://w3.org" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">Laporan Akhir Analisis</h2>
+                <p class="text-gray-500 text-sm mt-1">Dijana secara automatik berdasarkan jawapan anda</p>
+            </div>
+
+            <!-- Ringkasan Maklumat Pelanggan -->
+            <div class="bg-brandBlue-light p-4 rounded-lg mb-6">
+                <h3 class="font-bold text-brandBlue-dark text-sm uppercase tracking-wider mb-2">Profil Pemohon</h3>
+                <p class="text-sm"><span class="font-semibold">Nama:</span> <span id="rep-name">-</span></p>
+                <p class="text-sm"><span class="font-semibold">No. Telefon:</span> <span id="rep-phone">-</span></p>
+                <p class="text-sm"><span class="font-semibold">Emel:</span> <span id="rep-email">-</span></p>
+            </div>
+
+            <!-- Keputusan Analisis Skor -->
+            <div class="mb-8">
+                <h3 class="font-bold text-gray-700 mb-2">Keputusan Skor Anda:</h3>
+                <div class="flex items-baseline gap-2 mb-3">
