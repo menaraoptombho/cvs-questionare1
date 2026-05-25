@@ -4,109 +4,289 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CVS-Smart Questionnaire & Report</title>
-    
-    <!-- Tailwind CSS Rasmi -->
-    <script src="https://tailwindcss.com"></script>
-    
-    <!-- Sistem Sandaran CSS Kekal (Putih-Biru) -->
     <style>
+        /* TEMA WARNA PUTIH BIRU DAN SISTEM NAVIGASI JAMINAN BEBAS ERROR */
         :root {
-            --brand-blue-dark: #1e3a8a;
-            --brand-blue-default: #1d4ed8;
-            --brand-blue-light: #e6f0fa;
+            --blue-dark: #1e3a8a;
+            --blue-default: #1d4ed8;
+            --blue-light: #e6f0fa;
+            --gray-bg: #f3f4f6;
         }
+        
         body {
-            background-color: #f3f4f6 !important;
-            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--gray-bg);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #1f2937;
+            min-h-screen: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        .bg-custom-dark { background-color: var(--brand-blue-dark) !important; }
-        .bg-custom-blue { background-color: var(--brand-blue-default) !important; }
-        .bg-custom-light { background-color: var(--brand-blue-light) !important; }
-        .text-custom-dark { color: var(--brand-blue-dark) !important; }
-        .text-custom-blue { color: var(--brand-blue-default) !important; }
-        .hidden { display: none !important; }
-        .complaint-list { font-size: 0.8rem; color: #4b5563; background: #f9fafb; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid #cbd5e1; }
+
+        header {
+            background-color: var(--blue-dark);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        main {
+            max-width: 700px;
+            width: 100%;
+            margin: 30px auto;
+            padding: 0 15px;
+            box-sizing: border-box;
+            flex-grow: 1;
+        }
+
+        .card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+            box-sizing: border-box;
+        }
+
+        /* SISTEM NAVIGASI PANELS - JAMINAN TIDAK AKAN COMPLICT DENGAN TAILWIND */
+        .app-panel {
+            display: none;
+        }
+        .app-panel.active-panel {
+            display: block !important;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label.field-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        input[type="text"], input[type="tel"], input[type="email"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        input[type="text"]:focus, input[type="tel"]:focus, input[type="email"]:focus {
+            outline: none;
+            border-color: var(--blue-default);
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+        }
+
+        .complaint-list {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            font-size: 13.5px;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .radio-option:hover {
+            background-color: #f9fafb;
+        }
+
+        .radio-option input {
+            margin-right: 12px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .btn {
+            width: 100%;
+            background-color: var(--blue-default);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-sizing: border-box;
+        }
+
+        .btn:hover {
+            background-color: var(--blue-dark);
+        }
+
+        .btn-flex {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-back {
+            width: 30%;
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+        .btn-back:hover {
+            background-color: #d1d5db;
+        }
+
+        .btn-submit {
+            width: 70%;
+        }
+
+        .profile-box {
+            background-color: var(--blue-light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            border-left: 4px solid var(--blue-default);
+        }
+
+        .score-display {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .score-num {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue-default);
+            line-height: 1;
+        }
+
+        .status-badge {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .rec-box {
+            background-color: #fffde7;
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 25px;
+        }
+
+        .btn-appointment {
+            display: block;
+            text-align: center;
+            background-color: var(--blue-default);
+            color: white;
+            font-weight: bold;
+            padding: 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-appointment:hover {
+            background-color: var(--blue-dark);
+        }
+
+        footer {
+            background-color: white;
+            text-align: center;
+            padding: 15px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: auto;
+        }
     </style>
 </head>
-<body class="text-gray-800 min-h-screen flex flex-col justify-between m-0 p-0">
+<body>
 
     <!-- Header -->
-    <header class="bg-custom-dark text-white p-5 shadow-md">
-        <div class="max-w-3xl mx-auto flex justify-between items-center" style="display: flex; justify-content: space-between; align-items: center;">
-            <h1 class="text-xl font-bold tracking-wide m-0" style="font-size: 1.25rem; font-weight: bold;">CVS-SMART SYSTEM</h1>
-            <span class="text-sm bg-blue-600 px-3 py-1 rounded-full" style="background-color: #2563eb; padding: 4px 12px; border-radius: 9999px; font-size: 0.875rem;">Ujian Diagnostik Kesihatan Mata</span>
+    <header>
+        <div class="header-container">
+            <h1 style="margin:0; font-size: 1.3rem; letter-spacing: 0.5px;">CVS-SMART SYSTEM</h1>
+            <span style="background-color: #2563eb; padding: 4px 10px; border-radius: 20px; font-size: 12px;">Diagnostic Survey</span>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="max-w-2xl w-full mx-auto p-4 flex-grow my-6" style="max-w: 42rem; margin-left: auto; margin-right: auto; padding: 16px; flex-grow: 1;">
-        
-        <!-- SEKSYEN 1: BORANG MAKLUMAT PERIBADI -->
-        <div id="step-personal" class="bg-white p-8 rounded-xl shadow-lg border border-gray-100" style="background-color: white; padding: 32px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border: 1px solid #f3f4f6;">
-            <h2 class="text-2xl font-bold text-custom-dark mb-2" style="font-size: 1.5rem; margin-top: 0; margin-bottom: 8px;">Maklumat Peribadi Pelanggan</h2>
-            <p class="text-gray-500 mb-6 text-sm" style="color: #6b7280; font-size: 0.875rem; margin-bottom: 24px;">Sila isi maklumat anda sebelum memulakan saringan gejala Computer Vision Syndrome (CVS) bagi penyediaan laporan profil peribadi.</p>
+    <!-- Main Container -->
+    <main>
+        <div class="card">
             
-            <form id="form-personal" onsubmit="nextToQuestions(event)" style="display: flex; flex-direction: column; gap: 16px;">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1" style="display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 4px;">Nama Penuh <span style="color: #ef4444;">*</span></label>
-                    <input type="text" id="cust-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none" style="width: 100%; padding: 8px 16px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box;" placeholder="Masukkan nama penuh anda">
-                </div>
+            <!-- PANEL 1: BORANG MAKLUMAT PERIBADI (ACTIVE ASAL) -->
+            <div id="panel-personal" class="app-panel active-panel">
+                <h2 style="margin-top:0; color: var(--blue-dark); font-size: 22px;">Maklumat Peribadi Pelanggan</h2>
+                <p style="color: #6b7280; font-size: 14px; margin-bottom: 25px;">Sila lengkapkan butiran anda sebelum memulakan sesi kaji selidik diagnostik CVS.</p>
                 
-                <div style="display: flex; flex-direction: column; gap: 16px;">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1" style="display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 4px;">Nombor Telefon <span style="color: #ef4444;">*</span></label>
-                        <input type="tel" id="cust-phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none" style="width: 100%; padding: 8px 16px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box;" placeholder="Contoh: 0123456789">
+                <form id="form-personal" onsubmit="goToQuestions(event)">
+                    <div class="form-group">
+                        <label class="field-label">Nama Penuh <span style="color: #ef4444;">*</span></label>
+                        <input type="text" id="cust-name" required placeholder="Masukkan nama penuh anda">
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1" style="display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 4px;">Alamat Emel <span style="color: #ef4444;">*</span></label>
-                        <input type="email" id="cust-email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none" style="width: 100%; padding: 8px 16px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box;" placeholder="nama@email.com">
+                    <div class="form-group">
+                        <label class="field-label">Nombor Telefon <span style="color: #ef4444;">*</span></label>
+                        <input type="tel" id="cust-phone" required placeholder="Contoh: 0123456789">
                     </div>
-                </div>
-                
-                <button type="submit" class="bg-custom-blue text-white font-bold py-3 px-4 rounded-lg shadow-md" style="width: 100%; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 16px; font-size: 1rem;">
-                    Mula Kaji Selidik CVS →
-                </button>
-            </form>
-        </div>
-
-        <!-- SEKSYEN 2: SOALAN KAJI SELIDIK (5 GEJALA BERDASARKAN PDF) -->
-        <div id="step-questions" class="hidden bg-white p-8 rounded-xl shadow-lg border border-gray-100" style="background-color: white; padding: 32px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border: 1px solid #f3f4f6;">
-            <div class="flex justify-between items-center mb-6" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                <h2 class="text-2xl font-bold text-custom-dark m-0" style="font-size: 1.5rem; margin: 0;">Kaji Selidik Gejala CVS</h2>
-                <span class="text-sm text-custom-blue bg-custom-light px-3 py-1 rounded-full" style="padding: 4px 12px; border-radius: 9999px; font-size: 0.875rem; font-weight: 600;">Saringan Diagnostik</span>
+                    <div class="form-group">
+                        <label class="field-label">Alamat Emel <span style="color: #ef4444;">*</span></label>
+                        <input type="email" id="cust-email" required placeholder="nama@email.com">
+                    </div>
+                    <button type="submit" class="btn" style="margin-top: 10px;">Mula Kaji Selidik →</button>
+                </form>
             </div>
 
-            <form id="form-questions" onsubmit="generateReport(event)" style="display: flex; flex-direction: column; gap: 28px;">
+            <!-- PANEL 2: SOALAN KAJI SELIDIK BERDASARKAN DOKUMEN CVS -->
+            <div id="panel-questions" class="app-panel">
+                <h2 style="margin-top:0; color: var(--blue-dark); font-size: 22px; margin-bottom: 20px;">CVS Diagnostic Questionnaire</h2>
                 
-                <!-- Soalan 1: Visual -->
-                <div>
-                    <p class="font-medium text-gray-800 mb-1" style="font-weight: 600; margin-bottom: 4px;">1. Gejala Visual (Visual Complaints)</p>
-                    <div class="complaint-list">
-                        Gejala merangkumi: Pandangan kabur, ketegangan/keletihan mata, pandangan berganda (diplopia), kesukaran memfokus semula objek dekat, silau/melihat halo cahaya, sensitif terhadap cahaya, atau penurunan penglihatan selepas melihat skrin.
+                <form id="form-questions" onsubmit="processReport(event)">
+                    
+                    <!-- Soalan 1: Visual -->
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <p style="font-weight: 600; margin-bottom: 8px;">1. Visual Complaints</p>
+                        <div class="complaint-list">
+                            <strong>Senarai aduan visual:</strong> Blurred vision, Eye strain/fatigue, Double vision/diplopia, Difficulty in refocusing the eyes, Near vision discomfort, Unclear objects post-screen use, Glare/halos of light, Diminution of vision, Increased sensitivity to light.
+                        </div>
+                        <label class="field-label">Berdasarkan 9 aduan di atas, berapa banyakkah aduan yang anda alami?</label>
+                        <div class="radio-group">
+                            <label class="radio-option"><input type="radio" name="q1" value="0" required> <span>No visual complaints (0 Mata)</span></label>
+                            <label class="radio-option"><input type="radio" name="q1" value="1"> <span>One visual complaint (1 Mata)</span></label>
+                            <label class="radio-option"><input type="radio" name="q1" value="2"> <span>Two or more visual complaints (2 Mata)</span></label>
+                        </div>
                     </div>
-                    <p class="text-sm text-gray-700 font-medium mb-2">Daripada gejala visual di atas, berapa banyak yang anda alami?</p>
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q1" value="0" required style="margin-right: 12px;"> <span>Tiada aduan / gejala (0 Markah)</span></label>
-                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q1" value="1" style="margin-right: 12px;"> <span>Hanya mengalami satu (1) gejala (1 Markah)</span></label>
-                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q1" value="2" style="margin-right: 12px;"> <span>Mengalami dua (2) atau lebih gejala (2 Markah)</span></label>
-                    </div>
-                </div>
 
-                <!-- Soalan 2: Ocular Surface -->
-                <div>
-                    <p class="font-medium text-gray-800 mb-1" style="font-weight: 600; margin-bottom: 4px;">2. Gejala Permukaan Mata (Ocular Surface Complaints)</p>
-                    <div class="complaint-list">
-                        Gejala merangkumi: Mata kering, mata merah, kerengsaan/ketidakselesaan mata, terasa seperti ada bendasing, sensasi pedih/terbakar, gatal/kerap menggosok mata, mata berair, kelopak mata terasa berat, atau kerap mengelip mata.
-                    </div>
-                    <p class="text-sm text-gray-700 font-medium mb-2">Daripada gejala permukaan mata di atas, berapa banyak yang anda alami?</p>
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q2" value="0" required style="margin-right: 12px;"> <span>Tiada aduan / gejala (0 Markah)</span></label>
-                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q2" value="1" style="margin-right: 12px;"> <span>Hanya mengalami satu (1) gejala (1 Markah)</span></label>
-                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q2" value="2" style="margin-right: 12px;"> <span>Mengalami dua (2) atau lebih gejala (2 Markah)</span></label>
-                    </div>
-                </div>
-
-                <!-- Soalan 3: Extraocular -->
-                <div>
-                    <p class="font-medium text-gray-800 mb-1" style="font-weight: 600; margin-bottom: 4px;">3. Gejala Luar Mata (Extraocular Complaints)</p>
-                    <div class="complaint-list">
+                    <!-- Soalan 2: Ocular Surface -->
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <p style="font-weight: 600; margin-bottom: 8px;">2. Ocular Surface Complaints</p>
