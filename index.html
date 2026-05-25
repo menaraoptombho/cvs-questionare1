@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CVS-Smart Questionnaire & Report</title>
     
-    <!-- Menggunakan Tailwind CSS Rasmi -->
+    <!-- Tailwind CSS Rasmi -->
     <script src="https://tailwindcss.com"></script>
     
-    <!-- Sistem Sandaran (Backup) CSS: Menjamin warna & susunan tidak akan pecah walaupun Tailwind lambat loading -->
+    <!-- Sistem Sandaran CSS Kekal (Putih-Biru) -->
     <style>
         :root {
             --brand-blue-dark: #1e3a8a;
@@ -24,8 +24,8 @@
         .bg-custom-light { background-color: var(--brand-blue-light) !important; }
         .text-custom-dark { color: var(--brand-blue-dark) !important; }
         .text-custom-blue { color: var(--brand-blue-default) !important; }
-        .border-custom-blue { border-color: var(--brand-blue-default) !important; }
         .hidden { display: none !important; }
+        .complaint-list { font-size: 0.8rem; color: #4b5563; background: #f9fafb; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid #cbd5e1; }
     </style>
 </head>
 <body class="text-gray-800 min-h-screen flex flex-col justify-between m-0 p-0">
@@ -34,7 +34,7 @@
     <header class="bg-custom-dark text-white p-5 shadow-md">
         <div class="max-w-3xl mx-auto flex justify-between items-center" style="display: flex; justify-content: space-between; align-items: center;">
             <h1 class="text-xl font-bold tracking-wide m-0" style="font-size: 1.25rem; font-weight: bold;">CVS-SMART SYSTEM</h1>
-            <span class="text-sm bg-blue-600 px-3 py-1 rounded-full" style="background-color: #2563eb; padding: 4px 12px; border-radius: 9999px; font-size: 0.875rem;">Kaji Selidik Digital</span>
+            <span class="text-sm bg-blue-600 px-3 py-1 rounded-full" style="background-color: #2563eb; padding: 4px 12px; border-radius: 9999px; font-size: 0.875rem;">Ujian Diagnostik Kesihatan Mata</span>
         </div>
     </header>
 
@@ -44,12 +44,12 @@
         <!-- SEKSYEN 1: BORANG MAKLUMAT PERIBADI -->
         <div id="step-personal" class="bg-white p-8 rounded-xl shadow-lg border border-gray-100" style="background-color: white; padding: 32px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border: 1px solid #f3f4f6;">
             <h2 class="text-2xl font-bold text-custom-dark mb-2" style="font-size: 1.5rem; margin-top: 0; margin-bottom: 8px;">Maklumat Peribadi Pelanggan</h2>
-            <p class="text-gray-500 mb-6 text-sm" style="color: #6b7280; font-size: 0.875rem; margin-bottom: 24px;">Sila isi maklumat anda sebelum memulakan kaji selidik untuk tujuan penyediaan laporan akhir.</p>
+            <p class="text-gray-500 mb-6 text-sm" style="color: #6b7280; font-size: 0.875rem; margin-bottom: 24px;">Sila isi maklumat anda sebelum memulakan saringan gejala Computer Vision Syndrome (CVS) bagi penyediaan laporan profil peribadi.</p>
             
-            <form id="form-personal" onsubmit="nextToQuestions(event)" class="space-y-4" style="display: flex; flex-direction: column; gap: 16px;">
+            <form id="form-personal" onsubmit="nextToQuestions(event)" style="display: flex; flex-direction: column; gap: 16px;">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1" style="display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 4px;">Nama Penuh <span style="color: #ef4444;">*</span></label>
-                    <input type="text" id="cust-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2" style="width: 100%; padding: 8px 16px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box;" placeholder="Masukkan nama penuh anda">
+                    <input type="text" id="cust-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none" style="width: 100%; padding: 8px 16px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box;" placeholder="Masukkan nama penuh anda">
                 </div>
                 
                 <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -64,47 +64,49 @@
                 </div>
                 
                 <button type="submit" class="bg-custom-blue text-white font-bold py-3 px-4 rounded-lg shadow-md" style="width: 100%; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 16px; font-size: 1rem;">
-                    Mula Kaji Selidik →
+                    Mula Kaji Selidik CVS →
                 </button>
             </form>
         </div>
 
-        <!-- SEKSYEN 2: SOALAN KAJI SELIDIK -->
+        <!-- SEKSYEN 2: SOALAN KAJI SELIDIK (5 GEJALA BERDASARKAN PDF) -->
         <div id="step-questions" class="hidden bg-white p-8 rounded-xl shadow-lg border border-gray-100" style="background-color: white; padding: 32px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border: 1px solid #f3f4f6;">
             <div class="flex justify-between items-center mb-6" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                <h2 class="text-2xl font-bold text-custom-dark m-0" style="font-size: 1.5rem; margin: 0;">Kaji Selidik Prestasi</h2>
-                <span class="text-sm text-custom-blue bg-custom-light px-3 py-1 rounded-full" style="padding: 4px 12px; border-radius: 9999px; font-size: 0.875rem; font-weight: 600;">3 Soalan Utama</span>
+                <h2 class="text-2xl font-bold text-custom-dark m-0" style="font-size: 1.5rem; margin: 0;">Kaji Selidik Gejala CVS</h2>
+                <span class="text-sm text-custom-blue bg-custom-light px-3 py-1 rounded-full" style="padding: 4px 12px; border-radius: 9999px; font-size: 0.875rem; font-weight: 600;">Saringan Diagnostik</span>
             </div>
 
-            <form id="form-questions" onsubmit="generateReport(event)" class="space-y-6" style="display: flex; flex-direction: column; gap: 24px;">
-                <!-- Soalan 1 -->
+            <form id="form-questions" onsubmit="generateReport(event)" style="display: flex; flex-direction: column; gap: 28px;">
+                
+                <!-- Soalan 1: Visual -->
                 <div>
-                    <p class="font-medium text-gray-800 mb-3" style="font-weight: 500; margin-bottom: 12px;">1. Berapakah tahap kepuasan anda terhadap pengurusan sistem semasa?</p>
+                    <p class="font-medium text-gray-800 mb-1" style="font-weight: 600; margin-bottom: 4px;">1. Gejala Visual (Visual Complaints)</p>
+                    <div class="complaint-list">
+                        Gejala merangkumi: Pandangan kabur, ketegangan/keletihan mata, pandangan berganda (diplopia), kesukaran memfokus semula objek dekat, silau/melihat halo cahaya, sensitif terhadap cahaya, atau penurunan penglihatan selepas melihat skrin.
+                    </div>
+                    <p class="text-sm text-gray-700 font-medium mb-2">Daripada gejala visual di atas, berapa banyak yang anda alami?</p>
                     <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q1" value="3" required style="margin-right: 12px;"> <span>Sangat Puas Hati (3 Markah)</span></label>
-                        <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q1" value="2" style="margin-right: 12px;"> <span>Sederhana (2 Markah)</span></label>
-                        <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q1" value="1" style="margin-right: 12px;"> <span>Kurang Memuaskan (1 Markah)</span></label>
+                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q1" value="0" required style="margin-right: 12px;"> <span>Tiada aduan / gejala (0 Markah)</span></label>
+                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q1" value="1" style="margin-right: 12px;"> <span>Hanya mengalami satu (1) gejala (1 Markah)</span></label>
+                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q1" value="2" style="margin-right: 12px;"> <span>Mengalami dua (2) atau lebih gejala (2 Markah)</span></label>
                     </div>
                 </div>
 
-                <!-- Soalan 2 -->
+                <!-- Soalan 2: Ocular Surface -->
                 <div>
-                    <p class="font-medium text-gray-800 mb-3" style="font-weight: 500; margin-bottom: 12px;">2. Adakah perniagaan anda memerlukan automasi sistem digital dengan segera?</p>
+                    <p class="font-medium text-gray-800 mb-1" style="font-weight: 600; margin-bottom: 4px;">2. Gejala Permukaan Mata (Ocular Surface Complaints)</p>
+                    <div class="complaint-list">
+                        Gejala merangkumi: Mata kering, mata merah, kerengsaan/ketidakselesaan mata, terasa seperti ada bendasing, sensasi pedih/terbakar, gatal/kerap menggosok mata, mata berair, kelopak mata terasa berat, atau kerap mengelip mata.
+                    </div>
+                    <p class="text-sm text-gray-700 font-medium mb-2">Daripada gejala permukaan mata di atas, berapa banyak yang anda alami?</p>
                     <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q2" value="3" required style="margin-right: 12px;"> <span>Ya, Sangat Kritikal (3 Markah)</span></label>
-                        <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q2" value="2" style="margin-right: 12px;"> <span>Mungkin Dalam Masa Terdekat (2 Markah)</span></label>
-                        <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q2" value="1" style="margin-right: 12px;"> <span>Tidak Perlu Buat Masa Ini (1 Markah)</span></label>
+                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q2" value="0" required style="margin-right: 12px;"> <span>Tiada aduan / gejala (0 Markah)</span></label>
+                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q2" value="1" style="margin-right: 12px;"> <span>Hanya mengalami satu (1) gejala (1 Markah)</span></label>
+                        <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q2" value="2" style="margin-right: 12px;"> <span>Mengalami dua (2) atau lebih gejala (2 Markah)</span></label>
                     </div>
                 </div>
 
-                <!-- Soalan 3 -->
+                <!-- Soalan 3: Extraocular -->
                 <div>
-                    <p class="font-medium text-gray-800 mb-3" style="font-weight: 500; margin-bottom: 12px;">3. Berapakah bajet tahunan yang diperuntukkan untuk pengurusan fasiliti / IT?</p>
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q3" value="3" required style="margin-right: 12px;"> <span>Tinggi (> RM50,000) (3 Markah)</span></label>
-                        <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q3" value="2" style="margin-right: 12px;"> <span>Sederhana (RM10,000 - RM50,000) (2 Markah)</span></label>
-                        <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;"><input type="radio" name="q3" value="1" style="margin-right: 12px;"> <span>Rendah (&lt; RM10,000) (1 Markah)</span></label>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 16px; margin-top: 16px;">
+                    <p class="font-medium text-gray-800 mb-1" style="font-weight: 600; margin-bottom: 4px;">3. Gejala Luar Mata (Extraocular Complaints)</p>
+                    <div class="complaint-list">
